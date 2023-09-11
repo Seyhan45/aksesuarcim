@@ -1,0 +1,45 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_sablonLayout</title>
+    <style>
+        body {
+            background-color:yellow;
+            font-size:20px;
+        }
+        .ust {
+            width:400px;
+            height:50px;
+            background-color:blueviolet;
+        }
+
+        .alt {
+            width:400px;
+            height:50px;
+            background-color:greenyellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="ust">
+        Üst Kısım
+    </div>
+
+    <div class="orta">
+
+        @RenderBody()
+
+
+    </div>
+    <div class="alt">
+        <h2>Alt Kısım</h2>
+    </div>
+</body>
+</html>
