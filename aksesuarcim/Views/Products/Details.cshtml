@@ -1,0 +1,73 @@
+﻿@model aksesuarcim.Models.Products
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Products</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.product_Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.product_Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.product_Code)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.product_Code)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.product_price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.product_price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.image)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.image)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.detail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.detail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.discount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.discount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CategoryId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.union)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.union)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.criterion)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.criterion)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.product_Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
