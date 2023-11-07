@@ -53,28 +53,23 @@ namespace aksesuarcim.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Productsproduct_Id")
-                        .HasColumnType("int");
-
                     b.HasKey("CategoryId");
-
-                    b.HasIndex("Productsproduct_Id");
 
                     b.ToTable("categories");
                 });
 
             modelBuilder.Entity("aksesuarcim.Models.Orders", b =>
                 {
-                    b.Property<int>("order_Id")
+                    b.Property<int?>("order_Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("order_Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("order_Id"), 1L, 1);
 
-                    b.Property<int>("order_amount")
+                    b.Property<int?>("order_amount")
                         .HasColumnType("int");
 
-                    b.Property<int>("product_Id")
+                    b.Property<int?>("product_Id")
                         .HasColumnType("int");
 
                     b.HasKey("order_Id");
@@ -90,37 +85,34 @@ namespace aksesuarcim.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("product_Id"), 1L, 1);
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Ordersorder_Id")
+                    b.Property<int?>("CategoryId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("criterion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("detail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("discount")
+                    b.Property<int?>("discount")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("product_Code")
+                    b.Property<int?>("product_Code")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("product_Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("product_price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("shoppingId")
+                    b.Property<int?>("product_price")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("union")
@@ -128,9 +120,7 @@ namespace aksesuarcim.Migrations
 
                     b.HasKey("product_Id");
 
-                    b.HasIndex("Ordersorder_Id");
-
-                    b.HasIndex("shoppingId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("products");
                 });
@@ -151,45 +141,55 @@ namespace aksesuarcim.Migrations
 
                     b.HasKey("shoppingId");
 
+                    b.HasIndex("product_Id");
+
                     b.ToTable("shoppings");
                 });
 
-            modelBuilder.Entity("aksesuarcim.Models.Category", b =>
+            modelBuilder.Entity("aksesuarcim.Models.Slider", b =>
                 {
-                    b.HasOne("aksesuarcim.Models.Products", "Products")
-                        .WithMany("Categories")
-                        .HasForeignKey("Productsproduct_Id");
+                    b.Property<int>("SliderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Navigation("Products");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SliderId"), 1L, 1);
+
+                    b.Property<string>("SliderPicture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SliderText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SliderId");
+
+                    b.ToTable("sliders");
                 });
 
             modelBuilder.Entity("aksesuarcim.Models.Products", b =>
                 {
-                    b.HasOne("aksesuarcim.Models.Orders", "Orders")
-                        .WithMany()
-                        .HasForeignKey("Ordersorder_Id")
+                    b.HasOne("aksesuarcim.Models.Category", "Categories")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("aksesuarcim.Models.Shopping", "Shopping")
-                        .WithMany("products")
-                        .HasForeignKey("shoppingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("Shopping");
-                });
-
-            modelBuilder.Entity("aksesuarcim.Models.Products", b =>
-                {
                     b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("aksesuarcim.Models.Shopping", b =>
                 {
-                    b.Navigation("products");
+                    b.HasOne("aksesuarcim.Models.Products", "Products")
+                        .WithMany()
+                        .HasForeignKey("product_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("aksesuarcim.Models.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,8 +11,8 @@ public class Shopping
 
    [ForeignKey("Products")]
    public int product_Id { get; set; }
-
+   public virtual Products? Products { get; set; }   
    public int order_amount { get; set; }
 
-   public ICollection<Products> products { get; set; }
+   
 }

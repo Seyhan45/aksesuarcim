@@ -12,5 +12,5 @@ public class Category
     [Display(Name = "Kategori Adı")]
     public string? CategoryName { get; set; }
 
-    public Products? Products { get; set; }
+    virtual public  List<Products>? Products { get; set; }
 }

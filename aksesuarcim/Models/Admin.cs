@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace aksesuarcim.Models;
 
 public class Admin
 {
     [Key]
-    [Display(Name ="Admin Id")]
+    [Display(Name = "Admin Id")]
     public int admin_Id { get; set; }
     [Display(Name = "Admin Adı")]
     public string? email { get; set; }

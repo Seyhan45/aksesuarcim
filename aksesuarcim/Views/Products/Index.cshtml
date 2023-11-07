@@ -56,7 +56,7 @@
                 @Html.DisplayFor(modelItem => item.product_price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.image)
+                <img src="/urunler/@item.image" height="150" width="150" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.detail)
@@ -65,7 +65,7 @@
                 @Html.DisplayFor(modelItem => item.discount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CategoryId)
+                @Html.DisplayFor(modelItem => item.Categories.CategoryName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.union)

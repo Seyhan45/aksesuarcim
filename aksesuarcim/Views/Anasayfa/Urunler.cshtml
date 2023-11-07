@@ -1,0 +1,83 @@
+﻿@model List<aksesuarcim.Models.Products>
+
+@{
+    ViewData["Title"] = "Urunler";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<h2>Urunler</h2>
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 mb-5 text-center">
+                <ul class="product-category">
+                    <li><a href="#" class="active">All</a></li>
+                     @foreach(var kat in ViewBag.kategori)
+                    {
+                        <li><a href="">@kat.CategoryName</a></li>
+                    } 
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <!--ürün Başlangıç Noktası-->
+            @foreach(var item in Model)
+            {
+            <div class="col-md-6 col-lg-3 ftco-animate">
+                <div class="product">
+                    <a href="/Anasayfa/UrunDetay/@item.product_Id" class="img-prod">
+                        <img class="img-fluid" src="/urunler/@item.image" alt="Colorlib Template">
+                        <span class="status">@item.product_Code</span>
+                        <div class="overlay"></div>
+                    </a>
+                    <div class="text py-3 pb-4 px-3 text-center">
+                        <h3><a href="#">@item.product_Name</a></h3>
+                        <div class="d-flex">
+                            <div class="pricing">
+                                <p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">@item.product_price</span></p>
+                            </div>
+                        </div>
+                        <div class="bottom-area d-flex px-3">
+                            <div class="m-auto d-flex">
+                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                    <span><i class="ion-ios-menu"></i></span>
+                                </a>
+                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                    <span><i class="ion-ios-cart"></i></span>
+                                </a>
+                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
+                                    <span><i class="ion-ios-heart"></i></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+            <!--bitiş-->
+           
+
+
+            
+
+            
+        </div>
+        <div class="row mt-5">
+            <div class="col text-center">
+                <div class="block-27">
+                    <ul>
+                        <li><a href="#">&lt;</a></li>
+                        <li class="active"><span>1</span></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">&gt;</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@await Component.InvokeAsync("RelatedList")

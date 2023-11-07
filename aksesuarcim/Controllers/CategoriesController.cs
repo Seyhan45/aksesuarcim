@@ -22,7 +22,7 @@ namespace aksesuarcim.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-              return _context.categories != null ? 
+              return _context.categories != null ?
                           View(await _context.categories.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.categories'  is null.");
         }

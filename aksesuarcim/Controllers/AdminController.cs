@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using aksesuarcim.Models;
 
+
 namespace aksesuarcim.Controllers
 {
     public class AdminController : Controller
@@ -16,11 +17,12 @@ namespace aksesuarcim.Controllers
         // GET: AdminController
         public ActionResult Index()
         {
-            var liste=_context.admins.ToList();
+            
+            var liste = _context.admins.ToList();
             return View(liste);
         }
 
-        // GET: AdminController/Details/5
+        // GET: AdminConntroller/Details/5
         public ActionResult Details(int id)
         {
             var bul = _context.admins.Find(id);

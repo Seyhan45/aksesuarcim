@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using aksesuarcim.Data;
 using aksesuarcim.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace aksesuarcim.Controllers
 {
@@ -22,9 +23,8 @@ namespace aksesuarcim.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-              return _context.products != null ? 
-                          View(await _context.products.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.products'  is null.");
+            var applicationDbContext = _context.products.Include(p => p.Categories);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -36,6 +36,7 @@ namespace aksesuarcim.Controllers
             }
 
             var products = await _context.products
+                .Include(p => p.Categories)
                 .FirstOrDefaultAsync(m => m.product_Id == id);
             if (products == null)
             {
@@ -48,6 +49,7 @@ namespace aksesuarcim.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+            ViewBag.katelist = new SelectList(_context.categories, "CategoryId", "CategoryName");
             return View();
         }
 
@@ -56,14 +58,28 @@ namespace aksesuarcim.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("product_Id,product_Name,product_Code,product_price,image,detail,discount,CategoryId,union,criterion")] Products products)
+        public async Task<IActionResult> Create([Bind("product_Id,product_Name,product_Code,product_price,image,detail,discount,CategoryId,union,criterion")] Products products,IFormFile ResimYukle)
         {
-            if (ModelState.IsValid)
+            string uzanti = Path.GetExtension(ResimYukle.FileName);
+            //resim.jpg .jpg uzantısını burada aldım
+            var randomisim = Guid.NewGuid().ToString() + uzanti;
+            //yüklenecek resme yeniden isim vermiş oldum
+            var yol = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/urunler/",
+                randomisim);
+            using(var stream = new FileStream(yol, FileMode.Create))
+            {
+                await ResimYukle.CopyToAsync(stream);
+            }
+            //bu kodla resim yüklemiş olduk
+            products.image = randomisim;
+
+            if (!ModelState.IsValid)
             {
                 _context.Add(products);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.categories, "CategoryId", "CategoryId", products.CategoryId);
             return View(products);
         }
 
@@ -74,12 +90,13 @@ namespace aksesuarcim.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.katelist = new SelectList(_context.categories, "CategoryId", "CategoryName");
             var products = await _context.products.FindAsync(id);
             if (products == null)
             {
                 return NotFound();
             }
+            ViewData["CategoryId"] = new SelectList(_context.categories, "CategoryId", "CategoryId", products.CategoryId);
             return View(products);
         }
 
@@ -88,13 +105,27 @@ namespace aksesuarcim.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("product_Id,product_Name,product_Code,product_price,image,detail,discount,CategoryId,union,criterion")] Products products)
+        public async Task<IActionResult> Edit(int id, [Bind("product_Id,product_Name,product_Code,product_price,image,detail,discount,CategoryId,union,criterion")] Products products, IFormFile ResimYukle)
         {
             if (id != products.product_Id)
             {
                 return NotFound();
             }
-
+            if (ResimYukle!= null)
+            {
+                string uzanti = Path.GetExtension(ResimYukle.FileName);
+                //resim.jpg .jpg uzantısını burada aldım
+                var randomisim = Guid.NewGuid().ToString() + uzanti;
+                //yüklenecek resme yeniden isim vermiş oldum
+                var yol = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/urunler/",
+                    randomisim);
+                using (var stream = new FileStream(yol, FileMode.Create))
+                {
+                    await ResimYukle.CopyToAsync(stream);
+                }
+                //bu kodla resim yüklemiş olduk
+                products.image = randomisim;
+            }
             if (ModelState.IsValid)
             {
                 try
