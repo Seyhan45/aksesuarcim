@@ -22,19 +22,19 @@ namespace aksesuarcim.Controllers
             List<Category> kategoriler = _context.categories.ToList();
             ViewBag.kategori = kategoriler;
             ViewBag.kategori = _context.categories.ToList();
-            var urunler = _context.products.ToList();
+            var urunler = _context.Products.ToList();
             return View(urunler);
         }
         [HttpGet]
         public IActionResult UrunDetay(int id)
         {
-            var urun = _context.products.Find(id);
+            var urun = _context.Products.Find(id);
             return View(urun);
         }
 
         public IActionResult RelatedProduct(int id)
         {
-            var urunler = _context.products.ToList();
+            var urunler = _context.Products.ToList();
             return View(urunler);
         }
     }

@@ -14,7 +14,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.product_Name)
+                @Html.DisplayNameFor(model => model.product_Id)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.product_Code)
@@ -32,7 +32,7 @@
                 @Html.DisplayNameFor(model => model.discount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
+                @Html.DisplayNameFor(model => model.Category.CategoryName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.union)
@@ -65,7 +65,7 @@
                 @Html.DisplayFor(modelItem => item.discount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Categories.CategoryName)
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.union)

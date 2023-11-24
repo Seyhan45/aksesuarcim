@@ -20,84 +20,90 @@ namespace aksesuarcim.Controllers
             _context = context;
         }
 
+
         // GET: Products
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.products.Include(p => p.Categories);
-            return View(await applicationDbContext.ToListAsync());
+            var liste = _context.Products.Include(p=>p.Category).ToList();
+            //burada Include methodu ile inner join yaparak category ve products birleştirdik
+            return View(liste);
+
         }
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.products == null)
+            if (id == null || _context.Products == null)
             {
                 return NotFound();
             }
 
-            var products = await _context.products
-                .Include(p => p.Categories)
+            var Products = await _context.Products
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.product_Id == id);
-            if (products == null)
+            if (Products == null)
             {
                 return NotFound();
             }
 
-            return View(products);
+            return View(Products);
         }
 
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewBag.katelist = new SelectList(_context.categories, "CategoryId", "CategoryName");
+            ViewBag.kateliste = new SelectList(_context.categories, "CategoryId", "CategoryName");
             return View();
         }
 
         // POST: Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.F
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("product_Id,product_Name,product_Code,product_price,image,detail,discount,CategoryId,union,criterion")] Products products,IFormFile ResimYukle)
+        public async Task<IActionResult> Create([Bind("product_Id,product_Name,product_Code,product_price,image,detail,discount,CategoryId,union,criterion")] Products Products, IFormFile ResimYukle)
         {
-            string uzanti = Path.GetExtension(ResimYukle.FileName);
-            //resim.jpg .jpg uzantısını burada aldım
-            var randomisim = Guid.NewGuid().ToString() + uzanti;
-            //yüklenecek resme yeniden isim vermiş oldum
-            var yol = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/urunler/",
-                randomisim);
-            using(var stream = new FileStream(yol, FileMode.Create))
+            if (ResimYukle != null)
             {
-                await ResimYukle.CopyToAsync(stream);
-            }
-            //bu kodla resim yüklemiş olduk
-            products.image = randomisim;
+                var uzanti = Path.GetExtension(ResimYukle.FileName);
+                //bocek.png  .png domates.jpg  .jpg
+                string yeniisim = Guid.NewGuid().ToString() + uzanti;
 
-            if (!ModelState.IsValid)
+                string yol = Path.Combine(Directory.GetCurrentDirectory() + "/wwwroot/Urunler/" + yeniisim);
+                using (var stream = new FileStream(yol, FileMode.Create))
+                {
+                   ResimYukle.CopyToAsync(stream);
+                }
+                Products.image = yeniisim;
+            }
+
+            if (ModelState.IsValid==false)
             {
-                _context.Add(products);
+                _context.Add(Products);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.categories, "CategoryId", "CategoryId", products.CategoryId);
-            return View(products);
+            //ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", Products.CategoryId);
+            ViewBag.kateliste = new SelectList(_context.categories, "CategoryId", "CategoryName");
+            return View(Products);
         }
+
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.products == null)
+            if (id == null || _context.Products == null)
             {
                 return NotFound();
             }
-            ViewBag.katelist = new SelectList(_context.categories, "CategoryId", "CategoryName");
-            var products = await _context.products.FindAsync(id);
-            if (products == null)
+
+            var Products = await _context.Products.FindAsync(id);
+            if (Products == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.categories, "CategoryId", "CategoryId", products.CategoryId);
-            return View(products);
+            ViewBag.kateliste = new SelectList(_context.categories, "CategoryId", "CategoryName");
+            return View(Products);
         }
 
         // POST: Products/Edit/5
@@ -105,37 +111,37 @@ namespace aksesuarcim.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("product_Id,product_Name,product_Code,product_price,image,detail,discount,CategoryId,union,criterion")] Products products, IFormFile ResimYukle)
+        public async Task<IActionResult> Edit(int id, [Bind("product_Id,product_Name,product_Code,product_price,image,detail,discount,CategoryId,union,criterion")] Products Products, IFormFile ResimYukle)
         {
-            if (id != products.product_Id)
+            if (ResimYukle != null)
+            {
+                var uzanti = Path.GetExtension(ResimYukle.FileName);
+                //bocek.png  .png domates.jpg  .jpg
+                string yeniisim = Guid.NewGuid().ToString() + uzanti;
+
+                string yol = Path.Combine(Directory.GetCurrentDirectory() + "/wwwroot/Urunler/" + yeniisim);
+                using (var stream = new FileStream(yol, FileMode.Create))
+                {
+                   ResimYukle.CopyToAsync(stream);
+                }
+                Products.image = yeniisim;
+            }
+
+            if (id != Products.product_Id)
             {
                 return NotFound();
             }
-            if (ResimYukle!= null)
-            {
-                string uzanti = Path.GetExtension(ResimYukle.FileName);
-                //resim.jpg .jpg uzantısını burada aldım
-                var randomisim = Guid.NewGuid().ToString() + uzanti;
-                //yüklenecek resme yeniden isim vermiş oldum
-                var yol = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/urunler/",
-                    randomisim);
-                using (var stream = new FileStream(yol, FileMode.Create))
-                {
-                    await ResimYukle.CopyToAsync(stream);
-                }
-                //bu kodla resim yüklemiş olduk
-                products.image = randomisim;
-            }
-            if (ModelState.IsValid)
+            
+            if (ModelState.IsValid==false)
             {
                 try
                 {
-                    _context.Update(products);
+                    _context.Update(Products);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductsExists(products.product_Id))
+                    if (!ProductsExists(Products.product_Id))
                     {
                         return NotFound();
                     }
@@ -146,25 +152,25 @@ namespace aksesuarcim.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(products);
+            return View(Products);
         }
 
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.products == null)
+            if (id == null || _context.Products == null)
             {
                 return NotFound();
             }
 
-            var products = await _context.products
+            var Products = await _context.Products
                 .FirstOrDefaultAsync(m => m.product_Id == id);
-            if (products == null)
+            if (Products == null)
             {
                 return NotFound();
             }
 
-            return View(products);
+            return View(Products);
         }
 
         // POST: Products/Delete/5
@@ -172,23 +178,30 @@ namespace aksesuarcim.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.products == null)
+            if (_context.Products == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.products'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Products'  is null.");
             }
-            var products = await _context.products.FindAsync(id);
-            if (products != null)
+            var Products = await _context.Products.FindAsync(id);
+            if (Products != null)
             {
-                _context.products.Remove(products);
+                _context.Products.Remove(Products);
             }
-            
+            //Dosya silme
+            string yol = Path.Combine(Directory.GetCurrentDirectory() + "/wwwroot/Urunler/" + Products.image);
+            FileInfo yolFile = new FileInfo(yol);
+            if(yolFile.Exists)
+            {
+                System.IO.File.Delete(yolFile.FullName);
+                yolFile.Delete();
+            }
+            //Dosya Silme
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool ProductsExists(int id)
         {
-          return (_context.products?.Any(e => e.product_Id == id)).GetValueOrDefault();
+          return (_context.Products?.Any(e => e.product_Id == id)).GetValueOrDefault();
         }
     }
 }

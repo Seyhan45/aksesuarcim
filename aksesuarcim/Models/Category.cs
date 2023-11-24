@@ -5,12 +5,10 @@ namespace aksesuarcim.Models;
 public class Category
 {
     [Key]
-    [Display(Name = "Kategori Id")]
     public int CategoryId { get; set; }
-
-    [Required(ErrorMessage = "Kategori Adını Boş Bırakamazsınız")]
     [Display(Name = "Kategori Adı")]
+    [Required(ErrorMessage = "Bu Alan Boş Bırakılmaz")]
     public string? CategoryName { get; set; }
+    public List<Products>? Products { get; set; }
 
-    virtual public  List<Products>? Products { get; set; }
 }

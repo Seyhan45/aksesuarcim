@@ -12,8 +12,8 @@ using aksesuarcim.Data;
 namespace aksesuarcim.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231106150920_kutu")]
-    partial class kutu
+    [Migration("20231124140852_uzman45")]
+    partial class uzman45
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,33 @@ namespace aksesuarcim.Migrations
                     b.ToTable("admins");
                 });
 
+            modelBuilder.Entity("aksesuarcim.Models.CartItem", b =>
+                {
+                    b.Property<long>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ProductId"), 1L, 1);
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId");
+
+                    b.ToTable("CartItems");
+                });
+
             modelBuilder.Entity("aksesuarcim.Models.Category", b =>
                 {
                     b.Property<int>("CategoryId")
@@ -60,25 +87,6 @@ namespace aksesuarcim.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("aksesuarcim.Models.Orders", b =>
-                {
-                    b.Property<int?>("order_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("order_Id"), 1L, 1);
-
-                    b.Property<int?>("order_amount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("product_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("order_Id");
-
-                    b.ToTable("orders");
-                });
-
             modelBuilder.Entity("aksesuarcim.Models.Products", b =>
                 {
                     b.Property<int>("product_Id")
@@ -88,7 +96,6 @@ namespace aksesuarcim.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("product_Id"), 1L, 1);
 
                     b.Property<int?>("CategoryId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("criterion")
@@ -98,23 +105,18 @@ namespace aksesuarcim.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("discount")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("product_Code")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("product_Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("product_price")
-                        .IsRequired()
+                    b.Property<int>("product_price")
                         .HasColumnType("int");
 
                     b.Property<string>("union")
@@ -124,50 +126,44 @@ namespace aksesuarcim.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("products");
+                    b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("aksesuarcim.Models.Shopping", b =>
+            modelBuilder.Entity("aksesuarcim.Models.Slider", b =>
                 {
-                    b.Property<int>("shoppingId")
+                    b.Property<int>("SliderId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("shoppingId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SliderId"), 1L, 1);
 
-                    b.Property<int>("order_amount")
-                        .HasColumnType("int");
+                    b.Property<string>("Context")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("product_Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Heeader1")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("shoppingId");
+                    b.Property<string>("Heeader2")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("product_Id");
+                    b.Property<string>("SliderImage")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("shoppings");
+                    b.Property<string>("SliderName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SliderId");
+
+                    b.ToTable("sliders");
                 });
 
             modelBuilder.Entity("aksesuarcim.Models.Products", b =>
                 {
-                    b.HasOne("aksesuarcim.Models.Category", "Categories")
+                    b.HasOne("aksesuarcim.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
-                    b.Navigation("Categories");
-                });
-
-            modelBuilder.Entity("aksesuarcim.Models.Shopping", b =>
-                {
-                    b.HasOne("aksesuarcim.Models.Products", "Products")
-                        .WithMany()
-                        .HasForeignKey("product_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Products");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("aksesuarcim.Models.Category", b =>
