@@ -1,10 +1,11 @@
 ﻿using aksesuarcim.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 
 namespace aksesuarcim.Data;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext :IdentityDbContext<AppUser, AppRole, int>
 {
 	public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 	{
@@ -16,7 +17,7 @@ public class ApplicationDbContext : DbContext
 
 	public DbSet<Slider> sliders { get; set; }
 
-	public DbSet<Products> Products { get; set; }
+	public DbSet<Products>? Products { get; set; }
 
     public DbSet<CartItem>? cartItems { get; set; }
 	

@@ -1,9 +1,8 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace eticaret_uygula.Oturum
+namespace aksesuarcim.Oturum
 {
-    public static class SessionOturum
+    public static class SessionOturum2
     {
         public static void SetJson(this ISession session, string key, object value)
         {

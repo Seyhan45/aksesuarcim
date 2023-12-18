@@ -12,8 +12,8 @@ using aksesuarcim.Data;
 namespace aksesuarcim.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231124141434_uzman97")]
-    partial class uzman97
+    [Migration("20231213195219_yeni")]
+    partial class yeni
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

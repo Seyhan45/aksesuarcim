@@ -12,8 +12,8 @@ using aksesuarcim.Data;
 namespace aksesuarcim.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231124140852_uzman45")]
-    partial class uzman45
+    [Migration("20231216132300_son")]
+    partial class son
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,7 +67,7 @@ namespace aksesuarcim.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("cartItems");
                 });
 
             modelBuilder.Entity("aksesuarcim.Models.Category", b =>
