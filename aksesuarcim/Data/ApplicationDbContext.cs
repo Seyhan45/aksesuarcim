@@ -15,7 +15,7 @@ public class ApplicationDbContext :IdentityDbContext<AppUser, AppRole, int>
 
     public DbSet<Admin>? admins { get; set; }
 
-	public DbSet<Slider> sliders { get; set; }
+	public DbSet<Slider>? sliders { get; set; }
 
 	public DbSet<Products>? Products { get; set; }
 

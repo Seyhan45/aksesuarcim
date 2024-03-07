@@ -1,4 +1,5 @@
 using aksesuarcim.Data;
+using aksesuarcim.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,9 +9,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddSession(options =>
 {
-options.IdleTimeout = TimeSpan.FromSeconds(30);
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.IsEssential = true;
 });
 var app = builder.Build();
@@ -30,7 +33,6 @@ app.UseRouting();
 app.UseSession();
 app.UseAuthorization();
 app.UseAuthentication();
-
 
 app.MapControllerRoute(
     name: "default",

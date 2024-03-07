@@ -4,5 +4,6 @@ namespace aksesuarcim.Models
 {
 	public class AppRole:IdentityRole<int>
 	{
+
 	}
 }
